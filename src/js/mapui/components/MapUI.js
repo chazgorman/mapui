@@ -19,9 +19,9 @@ module.exports = React.createClass({
 
     },
     render: function () {
-        const position = [51.505, -0.09];
+        const position = [45.4215, -75.6972];
         const map = (
-            <Map center={position} zoom={13} onMoveend={this.onMapMoveEnd}>
+            <Map center={position} zoom={10} onMoveend={this.onMapMoveEnd}>
                 <TileLayer
                     url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
