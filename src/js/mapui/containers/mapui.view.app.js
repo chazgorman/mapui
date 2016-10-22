@@ -2,6 +2,8 @@ var React = require("react");
 var connect = require("react-redux").connect;
 var MapUIActionCreators = require("../actions/mapui.action_creators.js");
 var MapUIView = require("../components/MapUI");
+var Header = require("../../components/layout/hero.header");
+var Footer = require("../../components/layout/footer");
 
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",
@@ -18,11 +20,44 @@ var MapUIViewApp = React.createClass({
     },
 
     render: function() {
+        const mapDivStyle = {
+            margin: "10px"
+        };
+
         const mapUI = (
             <MapUIView onBoundsChange={this.props.aoiUpdate}>
             </MapUIView>
-        )
-        return mapUI;
+        );
+
+        const header = (
+            <Header title={"Demo Map with React & Leaflet"}>
+            </Header>
+        );
+
+        var titleAndTextLink = {
+            text: " Charlie Gorman",
+            link: "https://www.linkedin.com/in/charliegorman"
+        };
+
+        const footer = (
+            <Footer
+                title={"Demo Map with React & Leaflet"}
+                titleTextAndLink={titleAndTextLink}
+                twitterName={"ChazGorman"}
+                githubName={"chazgorman"}
+                githubProject={"mapui"}>
+            </Footer>
+        );
+
+        return (
+            <div>
+                {header}
+                <div style={mapDivStyle}>
+                    {mapUI}
+                </div>
+                {footer}
+            </div>
+        );
     }
 });
 
