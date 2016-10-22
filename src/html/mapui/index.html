@@ -15,11 +15,38 @@
         h1, h2, p {
             text-align: center;
         }
+
         .leaflet-container {
-            height: 400px;
+            height: 700px;
             width: 80%;
             margin: 0 auto;
         }
+
+        @media screen
+        and (min-device-width: 1200px)
+        and (max-device-width: 1600px)
+        and (-webkit-min-device-pixel-ratio: 1) {
+            .leaflet-container {
+                height: 400px;
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+
+        /* ----------- Retina Screens ----------- */
+        @media screen
+        and (min-device-width: 1200px)
+        and (max-device-width: 1600px)
+        and (-webkit-min-device-pixel-ratio: 2)
+        and (min-resolution: 192dpi) {
+            .leaflet-container {
+                height: 400px;
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+
+
     </style>
     <!--[if lt IE 9]>
     <script src="app/libs/es5-shim.min.js"></script>
