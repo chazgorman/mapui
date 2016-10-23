@@ -3,7 +3,8 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 module.exports = React.createClass({
     displayName: "MapUI",
     propTypes: {
-        onBoundsChange: React.PropTypes.func
+        onBoundsChange: React.PropTypes.func,
+        startPosition: React.PropTypes.Object
     },
     onMapMoveEnd: function(e){
         var bounds = e.target.getBounds();
@@ -19,7 +20,7 @@ module.exports = React.createClass({
 
     },
     render: function () {
-        const position = [45.4215, -75.6972];
+        const position = [this.props.startPosition.latitude, this.props.startPosition.longitude];
         const map = (
             <Map center={position} zoom={10} onMoveend={this.onMapMoveEnd}>
                 <TileLayer

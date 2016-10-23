@@ -23,4 +23,10 @@ module.exports = {
         };
     },
 
+    centerUpdate: function(data) {
+        return {
+            type: Actions.CENTER_UPDATE,
+            data: data
+        }
+    }
 };

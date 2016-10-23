@@ -8,7 +8,8 @@ var Footer = require("../../components/layout/footer");
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",
     propTypes: {
-        aoiUpdate: React.PropTypes.func
+        aoiUpdate: React.PropTypes.func,
+        centerPosition: React.PropTypes.object
     },
 
     componentDidMount: function() {
@@ -25,7 +26,8 @@ var MapUIViewApp = React.createClass({
         };
 
         const mapUI = (
-            <MapUIView onBoundsChange={this.props.aoiUpdate}>
+            <MapUIView onBoundsChange={this.props.aoiUpdate}
+                       startPosition={this.props.centerPosition}>
             </MapUIView>
         );
 
@@ -63,7 +65,7 @@ var MapUIViewApp = React.createClass({
 
 var mapStateToProps = function(state) {
     return {
-
+        centerPosition: state.mapView.center
     };
 };
 

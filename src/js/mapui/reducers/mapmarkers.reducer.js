@@ -7,8 +7,7 @@ module.exports = function(state, action) {
 
     state = state || {
             markers: [],
-            cards: [],
-            aoi: {}
+            cards: []
         };
 
     switch (action.type) {
