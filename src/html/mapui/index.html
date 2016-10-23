@@ -61,11 +61,11 @@
 <script type="text/javascript" src="app/bundles/mapui/mapui-packed.js"></script>
 <script type="text/javascript">
 
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            initMapUI(position);
-        });
-    } else {
+//    if ("geolocation" in navigator) {
+//        navigator.geolocation.getCurrentPosition(function(position) {
+//            initMapUI(position);
+//        });
+//    } else {
         var ottawaStartCoords = {
             coords: {
                 latitude: 45.4215,
@@ -73,7 +73,7 @@
             }
         };
         initMapUI(ottawaStartCoords)
-    }
+//    }
 </script>
 
 </html>
