@@ -4,7 +4,8 @@ module.exports = React.createClass({
     displayName: "MapUI",
     propTypes: {
         onBoundsChange: React.PropTypes.func,
-        startPosition: React.PropTypes.Object
+        startPosition: React.PropTypes.object,
+        markerText: React.PropTypes.string
     },
     onMapMoveEnd: function(e){
         var bounds = e.target.getBounds();
@@ -20,13 +21,24 @@ module.exports = React.createClass({
 
     },
     render: function () {
+
         const position = [this.props.startPosition.latitude, this.props.startPosition.longitude];
+        var marker = (this.props.markerText != null && this.props.markerText !== "") ?
+            (
+                <Marker position={position}>
+                    <Popup>
+                        <span>{this.props.markerText}</span>
+                    </Popup>
+                </Marker>
+            ) : null;
+
         const map = (
             <Map center={position} zoom={10} onMoveend={this.onMapMoveEnd}>
                 <TileLayer
                     url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
+                {marker}
             </Map>
         );
 

@@ -1,6 +1,8 @@
 var createStore = require("redux").createStore;
+var applyMiddleware = require("redux").applyMiddleware;
 var compose = require("redux").compose;
 var reducer = require("../reducers/mapui.reducer");
+import thunkMiddleware from 'redux-thunk'
 
 var enhancers = compose(
     window.devToolsExtension ?
@@ -10,4 +12,8 @@ var enhancers = compose(
         }
 );
 
-module.exports = createStore(reducer, enhancers);
+module.exports = createStore(
+    reducer,
+    applyMiddleware(
+        thunkMiddleware
+    ));

@@ -4,20 +4,23 @@ var MapUIActionCreators = require("../actions/mapui.action_creators.js");
 var MapUIView = require("../components/MapUI");
 var Header = require("../../components/layout/hero.header");
 var Footer = require("../../components/layout/footer");
+var MediumInput = require("../../components/form/medium.input");
 
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",
     propTypes: {
         aoiUpdate: React.PropTypes.func,
-        centerPosition: React.PropTypes.object
+        centerPosition: React.PropTypes.object,
+        isFetching: React.PropTypes.bool,
+        search: React.PropTypes.string
     },
 
     componentDidMount: function() {
 
     },
 
-    aoiUpdateFunc: function(data){
-        console.log(data);
+    searchFunc: function(data){
+        this.props.executeSearch(data);
     },
 
     render: function() {
@@ -25,9 +28,18 @@ var MapUIViewApp = React.createClass({
             margin: "10px"
         };
 
+        const locationSelect = (
+            <MediumInput name="place-name-select"
+                         placeholder={"Search..."}
+                         onSubmit={this.searchFunc}
+                         isFetching={this.props.isFetching}
+            />
+        );
+
         const mapUI = (
             <MapUIView onBoundsChange={this.props.aoiUpdate}
-                       startPosition={this.props.centerPosition}>
+                       startPosition={this.props.centerPosition}
+                       markerText={this.props.search}>
             </MapUIView>
         );
 
@@ -55,6 +67,7 @@ var MapUIViewApp = React.createClass({
             <div>
                 {header}
                 <div style={mapDivStyle}>
+                    {locationSelect}
                     {mapUI}
                 </div>
                 {footer}
@@ -65,7 +78,9 @@ var MapUIViewApp = React.createClass({
 
 var mapStateToProps = function(state) {
     return {
-        centerPosition: state.mapView.center
+        centerPosition: state.mapView.center,
+        isFetching: state.mapView.isFetching,
+        search: state.mapView.search
     };
 };
 
@@ -79,6 +94,9 @@ var mapDispatchToProps = function(dispatch) {
         },
         aoiUpdate: function(data) {
             dispatch(MapUIActionCreators.aoiUpdate(data));
+        },
+        executeSearch: function(data){
+            dispatch(MapUIActionCreators.fetchSearch(data));
         }
     }
 };

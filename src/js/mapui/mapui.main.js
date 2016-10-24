@@ -4,6 +4,7 @@ var store = require("./stores/mapui.store");
 var App = require("./containers/mapui.view.app");
 var MapUIActionCreators = require("./actions/mapui.action_creators.js");
 var initMapUI;
+require("babel-polyfill");
 
 initMapUI = function(config) {
 
