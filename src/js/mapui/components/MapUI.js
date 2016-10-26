@@ -29,7 +29,8 @@ module.exports = React.createClass({
             var markerPos = [parseFloat(markerInfo.lat), parseFloat(markerInfo.lon)];
 
             return (
-                <Marker position={markerPos}>
+                <Marker key={markerInfo.display_name}
+                        position={markerPos}>
                     <Popup>
                         <span>{markerInfo.display_name}</span>
                     </Popup>

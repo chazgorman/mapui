@@ -34,8 +34,10 @@ module.exports = function(state, action) {
         case MapUIActions.RECEIVE_SEARCH_RESULTS:
             var positionObj = null;
             var newPosition = null;
+            var selectedMarker = null;
 
             if(action.results.length !== 0){
+                selectedMarker = action.results[0];
                 positionObj = action.results[0];
                 newPosition = {
                     latitude: parseFloat(positionObj.lat),
@@ -45,6 +47,7 @@ module.exports = function(state, action) {
 
             return Object.assign({}, state, {
                 isFetching: false,
+                selectedMarker : selectedMarker,
                 search: positionObj !== null ? positionObj.Placename : "",
                 searchResults: action.results,
                 center: newPosition !== null ? newPosition : state.center

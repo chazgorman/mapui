@@ -12,10 +12,8 @@ module.exports = React.createClass({
                 <div className="message-header">
                     {this.props.title}
                 </div>
-                <div class="message-body">
-                    <br />
+                <div className="message-body">
                     {this.props.text}
-                    <br />
                 </div>
             </article>
         );

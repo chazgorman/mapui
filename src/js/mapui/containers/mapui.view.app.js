@@ -50,9 +50,9 @@ var MapUIViewApp = React.createClass({
             sideBar = this.props.pointsOfInterest.map(interestPoint => {
                     var isSelected = this.props.selectedMarker !== null &&
                         interestPoint.display_name === this.props.selectedMarker.display_name;
-                    console.log(isSelected);
                     return (
-                        <MediaDetailed mediaDetails={interestPoint}
+                        <MediaDetailed key={interestPoint.display_name}
+                                       mediaDetails={interestPoint}
                                        selected={isSelected}
                                        onSelected={this.props.selectMarker}
                             />
