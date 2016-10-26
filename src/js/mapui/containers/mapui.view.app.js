@@ -5,6 +5,8 @@ var MapUIView = require("../components/MapUI");
 var Header = require("../../components/layout/hero.header");
 var Footer = require("../../components/layout/footer");
 var MediumInput = require("../../components/form/medium.input");
+var MediaDetailed = require("../../components/media/media.detailed");
+var TitledMessage = require("../../components/message/titled.message");
 
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",
@@ -12,7 +14,9 @@ var MapUIViewApp = React.createClass({
         aoiUpdate: React.PropTypes.func,
         centerPosition: React.PropTypes.object,
         isFetching: React.PropTypes.bool,
-        search: React.PropTypes.string
+        search: React.PropTypes.string,
+        pointsOfInterest: React.PropTypes.array,
+        selectedMarker: React.PropTypes.object
     },
 
     componentDidMount: function() {
@@ -36,16 +40,51 @@ var MapUIViewApp = React.createClass({
             />
         );
 
+        const header = (
+            <Header title={"Demo Map with React & Leaflet"}>
+            </Header>
+        );
+
+        var sideBar;
+        if(this.props.pointsOfInterest.length > 0) {
+            sideBar = this.props.pointsOfInterest.map(interestPoint => {
+                    var isSelected = this.props.selectedMarker !== null &&
+                        interestPoint.display_name === this.props.selectedMarker.display_name;
+                    console.log(isSelected);
+                    return (
+                        <MediaDetailed mediaDetails={interestPoint}
+                                       selected={isSelected}
+                                       onSelected={this.props.selectMarker}
+                            />
+                    );
+                }
+            );
+        } else {
+            sideBar = (
+                <TitledMessage
+                    title={"Placename Search Using OpenStreetMap.org Nominatim Service"}
+                    text={"Enter a search term above to find places that match. (ie. 'kalamazoo')."}
+                    classname={"is-info"} />
+            );
+        }
+
         const mapUI = (
             <MapUIView onBoundsChange={this.props.aoiUpdate}
                        startPosition={this.props.centerPosition}
+                       markers={this.props.pointsOfInterest}
                        markerText={this.props.search}>
             </MapUIView>
         );
 
-        const header = (
-            <Header title={"Demo Map with React & Leaflet"}>
-            </Header>
+        const contentGrid = (
+            <div className="columns">
+                <div className="column auto">
+                    {sideBar}
+                </div>
+                <div className="column is-two-thirds">
+                    {mapUI}
+                </div>
+            </div>
         );
 
         var titleAndTextLink = {
@@ -68,7 +107,7 @@ var MapUIViewApp = React.createClass({
                 {header}
                 <div style={mapDivStyle}>
                     {locationSelect}
-                    {mapUI}
+                    {contentGrid}
                 </div>
                 {footer}
             </div>
@@ -78,9 +117,11 @@ var MapUIViewApp = React.createClass({
 
 var mapStateToProps = function(state) {
     return {
-        centerPosition: state.mapView.center,
-        isFetching: state.mapView.isFetching,
-        search: state.mapView.search
+        centerPosition: state.mapMarkers.center,
+        isFetching: state.mapMarkers.isFetching,
+        search: state.mapMarkers.search,
+        pointsOfInterest: state.mapMarkers.searchResults,
+        selectedMarker: state.mapMarkers.selectedMarker
     };
 };
 
@@ -97,6 +138,9 @@ var mapDispatchToProps = function(dispatch) {
         },
         executeSearch: function(data){
             dispatch(MapUIActionCreators.fetchSearch(data));
+        },
+        selectMarker: function(data){
+            dispatch(MapUIActionCreators.selectMarker(data));
         }
     }
 };

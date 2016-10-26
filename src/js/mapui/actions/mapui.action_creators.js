@@ -5,7 +5,7 @@ function executeSearch(data) {
         type: Actions.EXECUTE_SEARCH,
         data
     }
-};
+}
 
 function receiveSearch(search,result) {
     return {
@@ -14,7 +14,7 @@ function receiveSearch(search,result) {
         results: result,
         receivedAt: Date.now()
     }
-};
+}
 
 module.exports = {
     updateUser: function(name, value) {
@@ -53,6 +53,13 @@ module.exports = {
         }
     },
 
+    selectMarker: function(data) {
+        return {
+            type: Actions.SELECT_MARKER,
+            data: data
+        }
+    },
+
     // Meet our first thunk action creator!
     // Though its insides are different, you would use it just like any other action creator:
     // store.dispatch(fetchPosts('reactjs'))
@@ -73,7 +80,7 @@ module.exports = {
             // First dispatch: the app state is updated to inform
             // that the API call is starting.
 
-            dispatch(executeSearch(search))
+            dispatch(executeSearch(search));
 
             // The function called by the thunk middleware can return a value,
             // that is passed on as the return value of the dispatch method.
@@ -81,17 +88,14 @@ module.exports = {
             // In this case, we return a promise to wait for.
             // This is not required by thunk middleware, but it is convenient for us.
 
-            var searchBody = {
-                placename: search
-            };
-            return fetch(`http://localhost:8080/geocode`, {
-                    method: 'post',
+            var searchUrl = encodeURI("https://nominatim.openstreetmap.org/search.php?q=" + search + "&format=json");
+            return fetch(searchUrl, {
+                    method: 'get',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    mode: 'cors',
-                    body: JSON.stringify(searchBody)
+                    mode: 'cors'
                 })
                 .then(response => response.json())
                 .then(json =>
@@ -100,7 +104,7 @@ module.exports = {
                     // Here, we update the app state with the results of the API call.
 
                     dispatch(receiveSearch(search, json))
-            )
+            );
 
             // In a real world app, you also want to
             // catch any error in the network call.

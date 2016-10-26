@@ -5,7 +5,8 @@ module.exports = React.createClass({
     propTypes: {
         onBoundsChange: React.PropTypes.func,
         startPosition: React.PropTypes.object,
-        markerText: React.PropTypes.string
+        markerText: React.PropTypes.string,
+        markers: React.PropTypes.array
     },
     onMapMoveEnd: function(e){
         var bounds = e.target.getBounds();
@@ -23,25 +24,27 @@ module.exports = React.createClass({
     render: function () {
 
         const position = [this.props.startPosition.latitude, this.props.startPosition.longitude];
-        var marker = (this.props.markerText != null && this.props.markerText !== "") ?
-            (
-                <Marker position={position}>
+
+        const mapMarkers = this.props.markers.map(markerInfo => {
+            var markerPos = [parseFloat(markerInfo.lat), parseFloat(markerInfo.lon)];
+
+            return (
+                <Marker position={markerPos}>
                     <Popup>
-                        <span>{this.props.markerText}</span>
+                        <span>{markerInfo.display_name}</span>
                     </Popup>
                 </Marker>
-            ) : null;
+            )
+        });
 
-        const map = (
+        return (
             <Map center={position} zoom={10} onMoveend={this.onMapMoveEnd}>
                 <TileLayer
                     url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                {marker}
+                {mapMarkers}
             </Map>
         );
-
-        return map;
     }
 });

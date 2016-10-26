@@ -6,7 +6,7 @@ module.exports = React.createClass({
     },
     render: function () {
         return (
-            <section className="hero is-info">
+            <section className="hero is-primary">
                 <div className="hero-body">
                     <div className="container">
                         <h1 className="title">
