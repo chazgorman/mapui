@@ -34,6 +34,9 @@ var allConfigs = {
                         cacheDirectory: true,
                         presets: ['es2015','react']
                     }
+                }, {
+                    test: /\.json$/,
+                    loader: 'json'
                 },
                 {
                     test: require.resolve('react'),

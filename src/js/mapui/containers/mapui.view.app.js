@@ -1,12 +1,12 @@
 var React = require("react");
 var connect = require("react-redux").connect;
 var MapUIActionCreators = require("../actions/mapui.action_creators.js");
-var MapUIView = require("../components/MapUI");
 var Header = require("../../components/layout/hero.header");
 var Footer = require("../../components/layout/footer");
 var MediumInput = require("../../components/form/medium.input");
 var MediaDetailed = require("../../components/media/media.detailed");
 var TitledMessage = require("../../components/message/titled.message");
+var MapUIView = require("../components/MapGL");
 
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",

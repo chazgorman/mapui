@@ -19,11 +19,13 @@
   "homepage": "https://github.com/chazgorman/mapui#readme",
   "dependencies": {
     "csvtojson": "^1.0.3",
+    "json-loader": "^0.5.4",
     "leaflet": "*",
     "nominatim": "^0.1.0",
     "react": "^15.3.2",
     "react-dom": "15.0.1",
     "react-leaflet": "1.0.0-rc.2",
+    "react-mapbox-gl": "^0.15.0",
     "react-redux": "4.4.4",
     "redux": "3.4.0"
   },
