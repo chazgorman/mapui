@@ -60,6 +60,19 @@ module.exports = {
         }
     },
 
+    setMapType: function(data) {
+        return {
+            type: Actions.SET_MAP_TYPE,
+            data: data
+        }
+    },
+
+    clearSearch: function(){
+        return {
+            type: Actions.CLEAR_SEARCH
+        }
+    },
+
     // Meet our first thunk action creator!
     // Though its insides are different, you would use it just like any other action creator:
     // store.dispatch(fetchPosts('reactjs'))

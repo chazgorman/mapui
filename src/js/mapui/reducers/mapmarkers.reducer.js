@@ -31,6 +31,12 @@ module.exports = function(state, action) {
                     longitude: parseFloat(action.data.lon)
                 }
             });
+        case MapUIActions.CLEAR_SEARCH:
+            return Object.assign({}, state, {
+                selectedMarker : null,
+                search: "",
+                searchResults: [],
+            });
         case MapUIActions.RECEIVE_SEARCH_RESULTS:
             var positionObj = null;
             var newPosition = null;

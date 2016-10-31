@@ -17,15 +17,16 @@ module.exports = React.createClass({
         markers: React.PropTypes.array
     },
     onMapMoveEnd: function(e){
-        console.log(e);
-        var bounds = e.target.getBounds();
-        var northEast = { lat: bounds._northEast.lat, lng: bounds._northEast.lng };
-        var southWest = { lat: bounds._southWest.lat, lng: bounds._southWest.lng };
-        var newBounds = {
-            NorthEast: northEast,
-            SouthWest: southWest
-        };
-        if(this.props.onBoundsChange){
+        // TODO: How to get the bounds from Mapbox GL?
+        //console.log(e);
+        //var bounds = e.target.getBounds();
+        //var northEast = { lat: bounds._northEast.lat, lng: bounds._northEast.lng };
+        //var southWest = { lat: bounds._southWest.lat, lng: bounds._southWest.lng };
+        //var newBounds = {
+        //    NorthEast: northEast,
+        //    SouthWest: southWest
+        //};
+        if(this.props.onBoundsChange && typeof newBounds !== "undefined"){
             this.props.onBoundsChange(newBounds);
         }
 

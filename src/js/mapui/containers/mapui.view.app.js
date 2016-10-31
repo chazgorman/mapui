@@ -6,7 +6,9 @@ var Footer = require("../../components/layout/footer");
 var MediumInput = require("../../components/form/medium.input");
 var MediaDetailed = require("../../components/media/media.detailed");
 var TitledMessage = require("../../components/message/titled.message");
-var MapUIView = require("../components/MapGL");
+var MapUIView = require("../components/MapUI");
+var MapGLUIView = require("../components/MapGL");
+var MapModeToggle = require("../../components/form/button.toggle");
 
 var MapUIViewApp = React.createClass({
     displayName: "MapUIViewApp",
@@ -16,7 +18,8 @@ var MapUIViewApp = React.createClass({
         isFetching: React.PropTypes.bool,
         search: React.PropTypes.string,
         pointsOfInterest: React.PropTypes.array,
-        selectedMarker: React.PropTypes.object
+        selectedMarker: React.PropTypes.object,
+        mapType: React.PropTypes.string
     },
 
     componentDidMount: function() {
@@ -27,12 +30,16 @@ var MapUIViewApp = React.createClass({
         this.props.executeSearch(data);
     },
 
+    clearSearch: function(){
+        this.props.clearSearch();
+    },
+
     render: function() {
         const mapDivStyle = {
             margin: "10px"
         };
 
-        const locationSelect = (
+        var locationSelect = (
             <MediumInput name="place-name-select"
                          placeholder={"Search..."}
                          onSubmit={this.searchFunc}
@@ -46,6 +53,7 @@ var MapUIViewApp = React.createClass({
         );
 
         var sideBar;
+        var clearResultsButton;
         if(this.props.pointsOfInterest.length > 0) {
             sideBar = this.props.pointsOfInterest.map(interestPoint => {
                     var isSelected = this.props.selectedMarker !== null &&
@@ -55,10 +63,19 @@ var MapUIViewApp = React.createClass({
                                        mediaDetails={interestPoint}
                                        selected={isSelected}
                                        onSelected={this.props.selectMarker}
-                            />
+                        />
                     );
                 }
             );
+            clearResultsButton = (
+                <a className="button is-danger" onClick={this.searchFunc}>
+                    <span>Clear Results</span>
+                    <span className="icon">
+                        <i className="fa fa-times"></i>
+                    </span>
+                </a>
+            );
+
         } else {
             sideBar = (
                 <TitledMessage
@@ -68,18 +85,38 @@ var MapUIViewApp = React.createClass({
             );
         }
 
-        const mapUI = (
-            <MapUIView onBoundsChange={this.props.aoiUpdate}
-                       startPosition={this.props.centerPosition}
-                       markers={this.props.pointsOfInterest}
-                       markerText={this.props.search}>
-            </MapUIView>
-        );
+        var mapUI;
+        if(this.props.mapType === "Default"){
+            mapUI = (
+                <MapUIView onBoundsChange={this.props.aoiUpdate}
+                           startPosition={this.props.centerPosition}
+                           markers={this.props.pointsOfInterest}
+                           markerText={this.props.search}>
+                </MapUIView>
+            );
+        } else {
+            mapUI = (
+                <MapGLUIView onBoundsChange={this.props.aoiUpdate}
+                             startPosition={this.props.centerPosition}
+                             markers={this.props.pointsOfInterest}
+                             markerText={this.props.search}>
+                </MapGLUIView>
+            );
+        }
 
+        const mapModeToggle = (
+            <MapModeToggle buttonOneText={"Default"}
+                           buttonTwoText={"Mapbox GL View"}
+                           selectedButtonText={this.props.mapType}
+                           onToggle={this.props.setMapType}>
+            </MapModeToggle>
+        )
         const contentGrid = (
             <div className="columns">
                 <div className="column auto">
+                    {clearResultsButton}
                     {sideBar}
+                    {mapModeToggle}
                 </div>
                 <div className="column is-two-thirds">
                     {mapUI}
@@ -121,7 +158,8 @@ var mapStateToProps = function(state) {
         isFetching: state.mapMarkers.isFetching,
         search: state.mapMarkers.search,
         pointsOfInterest: state.mapMarkers.searchResults,
-        selectedMarker: state.mapMarkers.selectedMarker
+        selectedMarker: state.mapMarkers.selectedMarker,
+        mapType: state.mapView.mapType
     };
 };
 
@@ -141,6 +179,12 @@ var mapDispatchToProps = function(dispatch) {
         },
         selectMarker: function(data){
             dispatch(MapUIActionCreators.selectMarker(data));
+        },
+        setMapType: function(data){
+            dispatch(MapUIActionCreators.setMapType(data));
+        },
+        clearSearch: function(){
+            dispatch(MapUIActionCreators.clearSearch());
         }
     }
 };
